@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Record</title>
+</head>
+<body>
+    <button id="start">Start</button><br>
+    <button id="stop">Stop</button>
+    <audio controls id="player"></audio>
+
+    <!-- <script>
+
+        let mediaRecorder;
+        let audioChunks=[];
+
+        // mic access
+
+        async function setup(){
+            const stream = await
+            navigator.mediaDevices.getUserMedia({audio:true});
+            mediaRecorder = new MediaRecorder(stream);
+
+            
+        // audio Capture part 
+
+        mediaRecorder.ondataavailable = (event)=>{
+            audioChunks.push(event.data);
+        };
+
+
+          // final audio banana 
+
+        mediaRecorder.onstop=()=>{
+            const blob = new Blob (audioChunks, {type:"audio/webm"});
+
+            const url = URL.createObjectURL(blob);
+            document.getElementById("player").src=url;
+
+
+        };
+
+
+        };
+
+    
+
+            setup();
+
+             // Recodeing stop and start part 
+        
+        document.getElementById("start").onclick=()=>{
+            audioChunks=[];
+            mediaRecorder.start();
+        };
+
+
+        document.getElementById("stop").onclick=()=>{
+            mediaRecorder.stop();
+        };
+    </script> -->
+
+
+    <script>
+        let mediaRecorder;
+        let audioChunks;
+
+        async function setup() {
+            
+            const stream = await 
+            navigator.mediaDevices.getUserMedia({audio:true});
+            mediaRecorder = new MediaRecorder(stream);
+
+            // audio capture 
+            mediaRecorder.ondataavailable=(event)=>{
+                audioChunks.push(event.data);
+            };
+
+            // final audio banana 
+
+          mediaRecorder.onstop=()=>{
+              const blob = new Blob(audioChunks);
+            const url = URL.createObjectURL(blob);
+
+            document.getElementById("player").src=url;
+          };
+        }
+
+        setup();
+
+        // recoarding stop and start
+
+        document.getElementById("start").onclick=()=>{
+            audioChunks=[];
+            mediaRecorder.start();
+        };
+
+        document.getElementById("stop").onclick=()=>{
+            mediaRecorder.stop();
+        }
+
+    </script>
+</body>
+
+</html>
