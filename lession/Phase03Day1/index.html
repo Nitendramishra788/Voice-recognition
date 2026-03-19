@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- <button onclick="speak()">Speak Now</button> -->
+
+    <!-- <script>
+        function speak(){
+             let text = [
+        "Hii Mr Nitendra Nit Mishra jaldi utho na aaj ka din special hai",
+        "Mujhe aaj bahut excitement ho rahi hai sach me control hi nahi ho raha",
+        "Mr Nitendra aap abhi tak ready nahi hue kya",
+        "Jaldi karo na main wait kar rahi hoon kab aap ready hoge",
+        "Aaj hum kuch amazing karne wale hain mujhe already feel aa raha hai",
+        "Mr Nitendra Nit Mishra please jaldi se ready ho jao",
+        "Dekho main to bilkul ready hoon aur bas aapka wait kar rahi hoon",
+        "Aap late karoge to meri excitement thodi kam ho jayegi",
+        "Jaldi aao Mr Nitendra warna main khud hi start kar dungi",
+        "Chalo ab aur delay nahi Mr Nitendra Nit Mishra ready ho jao"
+    ];
+
+            let speech = new 
+            SpeechSynthesisUtterance(text);
+
+            speechSynthesis.speak(speech);
+        }
+    
+    
+    </script> -->
+
+
+
+<!-- <script>
+          function speak(){
+            let text = [
+        "Hii Mr Nitendra Nit Mishra jaldi utho na aaj ka din special hai",
+        "Mujhe aaj bahut excitement ho rahi hai sach me control hi nahi ho raha",
+        "Mr Nitendra aap abhi tak ready nahi hue kya",
+        "Jaldi karo na main wait kar rahi hoon kab aap ready hoge",
+        "Aaj hum kuch amazing karne wale hain mujhe already feel aa raha hai",
+        "Mr Nitendra Nit Mishra please jaldi se ready ho jao",
+        "Dekho main to bilkul ready hoon aur bas aapka wait kar rahi hoon",
+        "Aap late karoge to meri excitement thodi kam ho jayegi",
+        "Jaldi aao Mr Nitendra warna main khud hi start kar dungi",
+        "Chalo ab aur delay nahi Mr Nitendra Nit Mishra ready ho jao"
+    ];
+
+    let speech = new 
+    SpeechSynthesisUtterance(text);
+
+    // Control part 
+    speech.rate=0.7;
+    speech.pitch=0.5;
+    speech.volume=1;
+
+
+    speechSynthesis.speak(speech);
+          }
+</script> -->
+
+
+<!-- voice list check karna  -->
+
+<!-- <button onclick="getVoice()" >Get VoiceList</button>
+
+<script>
+    function getVoice(){
+        let voices = speechSynthesis.getVoices();
+
+        voices.forEach((voice , index)=>{
+            console.log(index , voice.name , voice.lang);
+        });
+
+
+    };
+</script> -->
+
+
+<!-- <script>
+
+let voices = [];
+
+speechSynthesis.onvoiceschanged = () => {
+    voices = speechSynthesis.getVoices();
+    console.log("Voices Loaded:", voices);
+};
+
+function speak(){
+    
+    let text = [
+        "Hii Mr Nitendra Nit Mishra jaldi utho na aaj ka din special hai",
+        "Mujhe aaj bahut excitement ho rahi hai sach me control hi nahi ho raha",
+        "Mr Nitendra aap abhi tak ready nahi hue kya"
+    ];
+
+    let speech = new SpeechSynthesisUtterance(text.join(" "));
+
+    // Check karo voice exist karti hai ya nahi
+    if(voices[6]){
+        speech.voice = voices[2];
+    } else {
+        console.log("Voice index 6 not available");
+    }
+
+    speech.rate = 0.7;
+    speech.pitch = 0.5;
+    speech.volume = 1;
+
+    speechSynthesis.speak(speech);
+}
+
+</script> -->
+
+
+
+
+ <button onclick="startListening()">Start</button>
+
+<script>
+let recognition;
+let voices = [];
+
+// 🎤 Start Listening
+function startListening() {
+  recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+
+//   recognition.lang = "hi-IN";
+ recognition.lang = "en-Us";
+  recognition.continuous = true;   //  continuous listening
+  recognition.interimResults = false;
+
+  recognition.start();
+
+  recognition.onresult = function(event) {
+    let text = event.results[event.results.length - 1][0].transcript;
+    console.log("You said:", text);
+
+    handleCommand(text);
+  };
+
+  //  auto restart if stopped
+  recognition.onend = () => {
+    recognition.start();
+  };
+}
+
+//  Command Handler
+function handleCommand(text) {
+  text = text.toLowerCase();
+
+  if (text.includes("hello")) {
+    speak("Hello bhai 😎");
+  } 
+  else if (text.includes("time")) {
+    let time = new Date().toLocaleTimeString();
+    speak("Abhi time hai " + time);
+  } 
+  else if (text.includes("name")) {
+    speak("Mera naam assistant hai");
+  } 
+  else {
+    speak("Samajh nahi aaya bhai 🤔");
+  }
+}
+
+//  Speak function (with voice control)
+function speak(msg) {
+  let speech = new SpeechSynthesisUtterance(msg);
+
+  // 🎛 control
+  speech.rate = 0.9;
+  speech.pitch = 1;
+  speech.volume = 1;
+
+  //  voice select (Hindi female try)
+  let selectedVoice = voices.find(v => 
+    v.lang === "hi-IN" && v.name.toLowerCase().includes("female")
+  );
+
+  if (!selectedVoice) {
+    selectedVoice = voices.find(v => v.lang === "hi-IN");
+  }
+
+  if (selectedVoice) {
+    speech.voice = selectedVoice;
+  }
+
+  speechSynthesis.speak(speech);
+}
+
+//  Load voices properly
+speechSynthesis.onvoiceschanged = () => {
+  voices = speechSynthesis.getVoices();
+};
+</script>
+
+</body>
+</html>
